@@ -1,0 +1,20 @@
+<form [formGroup]="tarefaForm">
+
+  <label>
+    Descrição:
+    <input type="text" formControlName="descricao">
+  </label>
+
+  <label>
+    Pausa menor em minutos:
+    <input type="text" formControlName="pausaMenor">
+  </label>
+
+  <label>
+    Pausa maior em minutos:
+    <input type="text" formControlName="pausaMaior">
+  </label>
+
+  <button type="button" class="btn btn-success" (click)="enviarTarefa()">Enviar</button>
+
+</form>
