@@ -1,20 +1,22 @@
 <form [formGroup]="tarefaForm">
 
-  <label>
-    Descrição:
-    <input type="text" formControlName="descricao">
-  </label>
+  <div class="form-group">
+    <label for="descricao">Descrição:</label>
+    <input type="text" class="form-control" formControlName="descricao" id="descricao">
+  </div>
 
-  <label>
-    Pausa menor em minutos:
-    <input type="text" formControlName="pausaMenor">
-  </label>
+  <div class="form-group">
+    <label id="pausaMenor">Pausa menor em minutos:</label>
+    <input type="tel" class="form-control" formControlName="pausaMenor" id="pausaMenor">
+  </div>
 
-  <label>
-    Pausa maior em minutos:
-    <input type="text" formControlName="pausaMaior">
-  </label>
+  <div class="form-group">
+    <label id="pausaMaior">Pausa maior em minutos:</label>
+    <input type="tel" class="form-control" formControlName="pausaMaior" id="pausaMaior">
+  </div>
 
-  <button type="button" class="btn btn-success" (click)="enviarTarefa()">Enviar</button>
+  <div class="text-center">
+    <button type="button" class="btn btn-primary" (click)="enviarTarefa()">Cadastrar</button>
+  </div>
 
 </form>
