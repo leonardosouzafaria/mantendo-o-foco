@@ -1,4 +1,6 @@
+import { TarefaService } from './../../../services/tarefa/tarefa.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+import { Tarefa } from 'src/app/models/tarefa/tarefa';
 
 @Component({
   selector: 'app-cronometro',
@@ -10,18 +12,23 @@ export class CronometroComponent implements OnInit {
   minutos = '00';
   segundos = '00';
   regressao;
+  tarefaExecucao: Tarefa;
 
   @ViewChild('minuto') minuto: ElementRef;
   @ViewChild('segundo') segundo: ElementRef;
 
-  constructor() { }
+  constructor(private tarefaService: TarefaService) { }
 
   ngOnInit() {
+    this.tarefaExecucao = new Tarefa();
   }
 
   iniciar(): void {
-    this.minutos = '01';
-    this.iniciarRegressao();
+    if (this.verificarTarefa()) {
+      this.selecionarTarefa();
+      this.minutos = '01';
+      this.iniciarRegressao();
+    }
   }
 
   iniciarRegressao(): void {
@@ -52,6 +59,22 @@ export class CronometroComponent implements OnInit {
     this.segundo.nativeElement.textContent -= 1;
     if (this.segundo.nativeElement.textContent.length < 2) {
       this.segundo.nativeElement.textContent = '0' + this.segundo.nativeElement.textContent;
+    }
+  }
+
+  verificarTarefa(): boolean {
+    if (this.tarefaService.tarefas.length <= 0) {
+      alert('Cadastre uma tarefa antes de iniciar o cronometro');
+      return false;
+    }
+    return true;
+  }
+
+  selecionarTarefa(): void {
+    if (!this.tarefaExecucao.id) {
+      this.tarefaExecucao = this.tarefaService.tarefas[1];
+    } else {
+
     }
   }
 

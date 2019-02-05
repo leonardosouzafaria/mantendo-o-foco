@@ -1,7 +1,35 @@
 <div class="text-center">
-  <h3 class="font-weight-light mt-4">Pomodoro ativo:</h3>
+  <h3 class="font-weight-light mt-4">Pomodoro ativo: {{tarefaExecucao.descricao}}</h3>
   <span class="d-block display-4">
     <span class=" minutos " #minuto>{{minutos}}</span>:<span class="segundos" #segundo>{{segundos}}</span>
   </span>
   <button type="button" class="btn btn-primary mt-2 mb-5" (click)="iniciar()">Iniciar</button>
+  <button type="button" class="btn btn-success mt-2 mb-5 ml-3" (click)="iniciar()">Concluir tarefa</button>
+</div>
+
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Intervalo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Você acabou de concluir um pomodoro!</p>
+        <p>Inicie sua pausa e aproveite esse momento</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Iniciar pausa</button>
+      </div>
+    </div>
+  </div>
 </div>
