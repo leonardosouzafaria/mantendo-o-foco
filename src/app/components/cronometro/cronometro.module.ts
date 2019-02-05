@@ -4,8 +4,7 @@ import { CronometroComponent } from './cronometro/cronometro.component';
 
 @NgModule({
   declarations: [CronometroComponent],
-  imports: [
-    CommonModule
-  ]
+  imports: [CommonModule],
+  exports: [CronometroComponent]
 })
 export class CronometroModule { }

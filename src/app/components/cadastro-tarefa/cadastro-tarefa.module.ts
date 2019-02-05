@@ -5,6 +5,7 @@ import { CadastroTarefaRoutingModule } from './cadastro-tarefa-routing.module';
 import { CadastroTarefaComponent } from './cadastro-tarefa/cadastro-tarefa.component';
 import { FormModule } from '../form/form.module';
 import { TabelaModule } from '../tabela/tabela.module';
+import { CronometroModule } from '../cronometro/cronometro.module';
 
 @NgModule({
   declarations: [CadastroTarefaComponent],
@@ -12,7 +13,8 @@ import { TabelaModule } from '../tabela/tabela.module';
     CommonModule,
     CadastroTarefaRoutingModule,
     FormModule,
-    TabelaModule
+    TabelaModule,
+    CronometroModule
   ]
 })
 export class CadastroTarefaModule { }

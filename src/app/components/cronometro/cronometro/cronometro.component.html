@@ -1,3 +1,10 @@
-<p>
-  cronometro works!
-</p>
+<div class="mx-auto">
+  <span>
+    <span class="minutos" #minuto>{{minutos}}</span>
+    :
+    <span class="segundos" #segundo>{{segundos}}</span>
+  </span>
+</div>
+
+
+<button type="button" class="btn btn-success" (click)="iniciar()">Iniciar</button>
