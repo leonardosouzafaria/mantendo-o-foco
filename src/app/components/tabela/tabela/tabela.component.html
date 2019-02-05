@@ -1,0 +1,20 @@
+<table class="table table-bordered">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Descrição</th>
+      <th scope="col">Quantidade Pomodoros</th>
+      <th scope="col">Tempo pausa menor</th>
+      <th scope="col">Tempo pausa maior</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let tarefa of tarefas">
+      <th scope="row">{{tarefa.id}}</th>
+      <td>{{tarefa.descricao}}</td>
+      <td>{{tarefa.quantidadePomodoro}}</td>
+      <td>{{tarefa.pausaMenor}}</td>
+      <td>{{tarefa.pausaMaior}}</td>
+    </tr>
+  </tbody>
+</table>
