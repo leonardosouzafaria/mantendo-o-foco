@@ -1,6 +1,7 @@
 import { TarefaService } from './../../../services/tarefa/tarefa.service';
 import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Tarefa } from 'src/app/models/tarefa/tarefa';
+declare const $: any;
 
 @Component({
   selector: 'app-cronometro',
@@ -13,6 +14,7 @@ export class CronometroComponent implements OnInit {
   segundos = '00';
   regressao;
   tarefaExecucao: Tarefa;
+  emPausa: boolean;
 
   @ViewChild('minuto') minuto: ElementRef;
   @ViewChild('segundo') segundo: ElementRef;
@@ -37,7 +39,7 @@ export class CronometroComponent implements OnInit {
         this.pararRegressao();
       } else if (this.segundo.nativeElement.textContent === '00') {
         this.subtrairMinuto();
-        this.segundo.nativeElement.textContent = '09';
+        this.segundo.nativeElement.textContent = '02';
       } else {
         this.subtrairSegundo();
       }
@@ -46,6 +48,8 @@ export class CronometroComponent implements OnInit {
 
   pararRegressao(): void {
     clearInterval(this.regressao);
+    !this.tarefaExecucao.quantidadePomodoro ? this.tarefaExecucao.quantidadePomodoro = 1 : this.tarefaExecucao.quantidadePomodoro++;
+    $('#modalPausa').modal({ backdrop: 'static' });
   }
 
   subtrairMinuto(): void {
@@ -72,10 +76,19 @@ export class CronometroComponent implements OnInit {
 
   selecionarTarefa(): void {
     if (!this.tarefaExecucao.id) {
-      this.tarefaExecucao = this.tarefaService.tarefas[1];
+      this.tarefaExecucao = this.tarefaService.tarefas[0];
     } else {
 
     }
+  }
+
+  iniciarPausa(): void {
+    this.emPausa = true;
+    if (this.tarefaExecucao.quantidadePomodoro < 4) {
+      this.minutos = '0' + this.tarefaExecucao.pausaMenor;
+    }
+
+    this.iniciarRegressao();
   }
 
 }
