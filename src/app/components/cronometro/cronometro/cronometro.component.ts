@@ -15,9 +15,7 @@ export class CronometroComponent implements OnInit {
   regressao;
   tarefaExecucao: Tarefa;
   emPausa: boolean;
-
-  @ViewChild('minuto') minuto: ElementRef;
-  @ViewChild('segundo') segundo: ElementRef;
+  pausaFinalizada: boolean;
 
   constructor(private tarefaService: TarefaService) { }
 
@@ -25,21 +23,24 @@ export class CronometroComponent implements OnInit {
     this.tarefaExecucao = new Tarefa();
   }
 
-  iniciar(): void {
+  iniciar(manterTarefa: boolean): void {
+    this.emPausa = false;
     if (this.verificarTarefa()) {
-      this.selecionarTarefa();
-      this.minutos = '01';
+      if (!manterTarefa) {
+        this.selecionarTarefa();
+      }
+      this.minutos = '25';
       this.iniciarRegressao();
     }
   }
 
   iniciarRegressao(): void {
     this.regressao = setInterval(() => {
-      if (this.minuto.nativeElement.textContent === '00' && this.segundo.nativeElement.textContent === '00') {
+      if (this.minutos === '00' && this.segundos === '00') {
         this.pararRegressao();
-      } else if (this.segundo.nativeElement.textContent === '00') {
+      } else if (this.segundos === '00') {
         this.subtrairMinuto();
-        this.segundo.nativeElement.textContent = '02';
+        this.segundos = '59';
       } else {
         this.subtrairSegundo();
       }
@@ -48,21 +49,31 @@ export class CronometroComponent implements OnInit {
 
   pararRegressao(): void {
     clearInterval(this.regressao);
-    !this.tarefaExecucao.quantidadePomodoro ? this.tarefaExecucao.quantidadePomodoro = 1 : this.tarefaExecucao.quantidadePomodoro++;
-    $('#modalPausa').modal({ backdrop: 'static' });
+    if (this.emPausa) {
+      this.pausaFinalizada = true;
+    } else {
+      !this.tarefaExecucao.quantidadePomodoro ? this.tarefaExecucao.quantidadePomodoro = 1 : this.tarefaExecucao.quantidadePomodoro++;
+      $('#modalPausa').modal({ backdrop: 'static' });
+    }
   }
 
   subtrairMinuto(): void {
-    this.minuto.nativeElement.textContent -= 1;
-    if (this.minuto.nativeElement.textContent.length < 2) {
-      this.minuto.nativeElement.textContent = '0' + this.minuto.nativeElement.textContent;
+    // tslint:disable-next-line:radix
+    let minuto = parseInt(this.minutos);
+    minuto -= 1;
+    this.minutos = minuto.toString();
+    if (this.minutos.length < 2) {
+      this.minutos = '0' + this.minutos;
     }
   }
 
   subtrairSegundo(): void {
-    this.segundo.nativeElement.textContent -= 1;
-    if (this.segundo.nativeElement.textContent.length < 2) {
-      this.segundo.nativeElement.textContent = '0' + this.segundo.nativeElement.textContent;
+    // tslint:disable-next-line:radix
+    let segundo = parseInt(this.segundos);
+    segundo -= 1;
+    this.segundos = segundo.toString();
+    if (this.segundos.length < 2) {
+      this.segundos = '0' + this.segundos;
     }
   }
 
@@ -77,8 +88,13 @@ export class CronometroComponent implements OnInit {
   selecionarTarefa(): void {
     if (!this.tarefaExecucao.id) {
       this.tarefaExecucao = this.tarefaService.tarefas[0];
+    } else if (this.tarefaService.tarefas[this.tarefaExecucao.id]) {
+      this.tarefaExecucao = this.tarefaService.tarefas[this.tarefaExecucao.id];
     } else {
-
+      clearInterval(this.regressao);
+      alert('Cadastre uma próxima tarefa.');
+      this.minutos = '00';
+      this.segundos = '00';
     }
   }
 
@@ -86,9 +102,13 @@ export class CronometroComponent implements OnInit {
     this.emPausa = true;
     if (this.tarefaExecucao.quantidadePomodoro < 4) {
       this.minutos = '0' + this.tarefaExecucao.pausaMenor;
+      this.minutos = this.minutos;
     }
-
     this.iniciarRegressao();
+  }
+
+  getProximoPomodoro(): void {
+
   }
 
 }
