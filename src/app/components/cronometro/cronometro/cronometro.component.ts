@@ -16,6 +16,7 @@ export class CronometroComponent implements OnInit {
   tarefaExecucao: Tarefa;
   emPausa: boolean;
   pausaFinalizada: boolean;
+  tarefaConcluida: boolean;
 
   constructor(private tarefaService: TarefaService) { }
 
@@ -24,13 +25,17 @@ export class CronometroComponent implements OnInit {
   }
 
   iniciar(manterTarefa: boolean): void {
-    this.emPausa = false;
+    if (!this.tarefaConcluida) {
+      this.emPausa = false;
+      this.minutos = '01';
+    }
+
     if (this.verificarTarefa()) {
       if (!manterTarefa) {
         this.selecionarTarefa();
+      } else {
+        this.iniciarRegressao();
       }
-      this.minutos = '25';
-      this.iniciarRegressao();
     }
   }
 
@@ -40,7 +45,7 @@ export class CronometroComponent implements OnInit {
         this.pararRegressao();
       } else if (this.segundos === '00') {
         this.subtrairMinuto();
-        this.segundos = '59';
+        this.segundos = '02';
       } else {
         this.subtrairSegundo();
       }
@@ -52,7 +57,7 @@ export class CronometroComponent implements OnInit {
     if (this.emPausa) {
       this.pausaFinalizada = true;
     } else {
-      !this.tarefaExecucao.quantidadePomodoro ? this.tarefaExecucao.quantidadePomodoro = 1 : this.tarefaExecucao.quantidadePomodoro++;
+      this.setPomodoro();
       $('#modalPausa').modal({ backdrop: 'static' });
     }
   }
@@ -88,13 +93,17 @@ export class CronometroComponent implements OnInit {
   selecionarTarefa(): void {
     if (!this.tarefaExecucao.id) {
       this.tarefaExecucao = this.tarefaService.tarefas[0];
+      this.iniciarRegressao();
     } else if (this.tarefaService.tarefas[this.tarefaExecucao.id]) {
       this.tarefaExecucao = this.tarefaService.tarefas[this.tarefaExecucao.id];
+      this.iniciarRegressao();
     } else {
-      clearInterval(this.regressao);
-      alert('Cadastre uma próxima tarefa.');
+      this.tarefaConcluida = true;
       this.minutos = '00';
       this.segundos = '00';
+      clearInterval(this.regressao);
+      this.setPomodoro();
+      alert('Cadastre uma próxima tarefa.');
     }
   }
 
@@ -107,8 +116,8 @@ export class CronometroComponent implements OnInit {
     this.iniciarRegressao();
   }
 
-  getProximoPomodoro(): void {
-
+  setPomodoro(): void {
+    !this.tarefaExecucao.quantidadePomodoro ? this.tarefaExecucao.quantidadePomodoro = 1 : this.tarefaExecucao.quantidadePomodoro++;
   }
 
 }
